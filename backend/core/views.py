@@ -8,9 +8,7 @@ from rest_framework.response import Response
 
 
 class ContactAPIView(views.APIView):
-    """
-    A simple APIView for creating contact entires.
-    """
+   
     serializer_class = ContactSerializer
 
     def get_serializer_context(self):
