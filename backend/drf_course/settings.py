@@ -1,37 +1,43 @@
+
+
+
+
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
-
 load_dotenv()
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-
-# DJANGO_SECRET_KEY = '+comduv%5j%1!8&s!41cl1(!t)ya6gp$6k=e!2z33!0(qm@53m'
-
-SECRET_KEY = "dinocy!vbt$x0)kz-i1ve6hv394+q&+7iwdg@kfk3aj4uiba=6"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = int(os.environ.get("DEBUG", default=0))
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+=======
+
+
+
+
+
 
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django_extensions",  # Great packaged to access abstract models
-    "django_filters",  # Used with DRF
-    "rest_framework",  # DRF package
-    "core",  # New app
+
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_extensions', #Great packaged to access abstract models
+    'django_filters', #Used with DRF
+    'rest_framework', #DRF package
+    'core', # New app
+
+    
 ]
 
 MIDDLEWARE = [
@@ -115,26 +121,33 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework_json_api.parsers.JSONParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework_json_api.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ),
+    'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework_json_api.filters.QueryParameterValidationFilter',
+        'rest_framework_json_api.filters.OrderingFilter',
+        'rest_framework_json_api.django_filters.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+    ),
+    'SEARCH_PARAM': 'filter[search]',
+    'TEST_REQUEST_RENDERER_CLASSES': (
+        'rest_framework_json_api.renderers.JSONRenderer',
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json'
+=======
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-REST_FRAMEWORK = {
-    "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
-    "DEFAULT_PARSER_CLASSES": ("rest_framework_json_api.parsers.JSONParser",),
-    "DEFAULT_RENDERER_CLASSES": (
-        "rest_framework_json_api.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ),
-    "DEFAULT_METADATA_CLASS": "rest_framework_json_api.metadata.JSONAPIMetadata",
-    "DEFAULT_FILTER_BACKENDS": (
-        "rest_framework_json_api.filters.QueryParameterValidationFilter",
-        "rest_framework_json_api.filters.OrderingFilter",
-        "rest_framework_json_api.django_filters.DjangoFilterBackend",
-        "rest_framework.filters.SearchFilter",
-    ),
-    "SEARCH_PARAM": "filter[search]",
-    "TEST_REQUEST_RENDERER_CLASSES": (
-        "rest_framework_json_api.renderers.JSONRenderer",
-    ),
-    "TEST_REQUEST_DEFAULT_FORMAT": "vnd.api+json",
+
 }
